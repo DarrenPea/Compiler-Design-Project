@@ -1,0 +1,20 @@
+[0m[[0m[33mwarn[0m] [0m[0mOption -Yresolve-term-conflict is deprecated: Use -Xresolve-term-conflict instead.[0m
+[0m[[0m[33mwarn[0m] [0m[0m[33m[33m-- [E029] Pattern Match Exhaustivity Warning: /mnt/c/Users/peada/OneDrive - Singapore University of Technology and Design/Term 7/Compiler/project/simp/src/main/scala/sutd/compiler/simp/syntax/Parser.scala:225:21 [0m[0m[0m
+[0m[[0m[33mwarn[0m] [0m[0m[33m225 |[0m                _ <- op [33mmatch[0m {[0m
+[0m[[0m[33mwarn[0m] [0m[0m[33m[33m    |[0m                     ^^[0m[0m
+[0m[[0m[33mwarn[0m] [0m[0m[33m    |[0m[33mmatch[0m may not be exhaustive.[0m
+[0m[[0m[33mwarn[0m] [0m[0m[33m    |[0m[0m
+[0m[[0m[33mwarn[0m] [0m[0m[33m    |[0mIt would fail on pattern case: sutd.compiler.simp.syntax.Lexer.LToken.EqSign(_), sutd.compiler.simp.syntax.Lexer.LToken.FSlashSign(_), sutd.compiler.simp.syntax.Lexer.LToken.LBrace(_), sutd.compiler.simp.syntax.Lexer.LToken.RBrace(_), sutd.compiler.simp.syntax.Lexer.LToken.LParen(_), sutd.compiler.simp.syntax.Lexer.LToken.RParen(_)[0m
+[0m[[0m[33mwarn[0m] [0m[0m[33m    |[0m(More unmatched cases are elided)[0m
+[0m[[0m[33mwarn[0m] [0m[0m[33m    |[0m[0m
+[0m[[0m[33mwarn[0m] [0m[0m[33m    |[0m longer explanation available when compiling with `-explain`[0m
+[0m[[0m[33mwarn[0m] [0m[0m[33m[33m-- [E029] Pattern Match Exhaustivity Warning: /mnt/c/Users/peada/OneDrive - Singapore University of Technology and Design/Term 7/Compiler/project/simp/src/main/scala/sutd/compiler/simp/syntax/Parser.scala:235:20 [0m[0m[0m
+[0m[[0m[33mwarn[0m] [0m[0m[33m235 |[0m            } [33myield[0m op [33mmatch[0m {[0m
+[0m[[0m[33mwarn[0m] [0m[0m[33m[33m    |[0m                    ^^[0m[0m
+[0m[[0m[33mwarn[0m] [0m[0m[33m    |[0m[33mmatch[0m may not be exhaustive.[0m
+[0m[[0m[33mwarn[0m] [0m[0m[33m    |[0m[0m
+[0m[[0m[33mwarn[0m] [0m[0m[33m    |[0mIt would fail on pattern case: sutd.compiler.simp.syntax.Lexer.LToken.EqSign(_), sutd.compiler.simp.syntax.Lexer.LToken.FSlashSign(_), sutd.compiler.simp.syntax.Lexer.LToken.LBrace(_), sutd.compiler.simp.syntax.Lexer.LToken.RBrace(_), sutd.compiler.simp.syntax.Lexer.LToken.LParen(_), sutd.compiler.simp.syntax.Lexer.LToken.RParen(_)[0m
+[0m[[0m[33mwarn[0m] [0m[0m[33m    |[0m(More unmatched cases are elided)[0m
+[0m[[0m[33mwarn[0m] [0m[0m[33m    |[0m[0m
+[0m[[0m[33mwarn[0m] [0m[0m[33m    |[0m longer explanation available when compiling with `-explain`[0m
+[0m[[0m[33mwarn[0m] [0m[0mthree warnings found[0m

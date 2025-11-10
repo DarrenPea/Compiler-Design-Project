@@ -1,0 +1,108 @@
+2023.11.20 14:13:07 INFO  Started: Metals version 1.1.0 in folders '/Users/luzm/git/compilerdesign/project/simp_lab3' for client Visual Studio Code 1.84.2.
+2023.11.20 14:13:08 WARN  Build server is not auto-connectable.
+2023.11.20 14:13:12 WARN  no build target for: /Users/luzm/git/compilerdesign/project/simp_lab3/src/main/scala/sutd/compiler/simp/ir/CFG.scala
+2023.11.20 14:13:16 INFO  no build target found for /Users/luzm/git/compilerdesign/project/simp_lab3/src/main/scala/sutd/compiler/simp/ir/CFG.scala. Using presentation compiler with project's scala-library version: 3.3.1
+2023.11.20 14:13:16 WARN  no build target for: /Users/luzm/git/compilerdesign/project/simp_lab3/src/main/scala/sutd/compiler/simp/ir/SSA.scala
+2023.11.20 14:13:19 INFO  time: code lens generation in 6.66s
+2023.11.20 14:13:19 INFO  time: code lens generation in 2.41s
+2023.11.20 14:13:19 INFO  time: code lens generation in 2.39s
+2023.11.20 14:13:19 WARN  no build target for: /Users/luzm/git/compilerdesign/project/simp_lab3/src/main/scala/sutd/compiler/simp/ir/SSA.scala
+Exception in thread "pool-3-thread-1" java.lang.InterruptedException
+	at scala.meta.internal.metals.FutureCancelToken.checkCanceled(FutureCancelToken.scala:29)
+	at scala.meta.internal.pc.CompilerAccess.onCompilerJobQueue$$anonfun$1(CompilerAccess.scala:230)
+	at scala.meta.internal.pc.CompilerJobQueue$Job.run(CompilerJobQueue.scala:152)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1130)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:630)
+	at java.base/java.lang.Thread.run(Thread.java:832)
+Nov 20, 2023 2:13:19 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 13
+Nov 20, 2023 2:13:19 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 14
+2023.11.20 14:18:30 WARN  no build target for: /Users/luzm/git/compilerdesign/project/simp_lab3/src/main/scala/sutd/compiler/simp/ir/SSA.scala
+2023.11.20 14:18:56 WARN  no build target for: /Users/luzm/git/compilerdesign/project/simp_lab3/src/main/scala/sutd/compiler/simp/ir/DF.scala
+2023.11.20 15:38:33 INFO  Shutting down server
+2023.11.20 15:38:33 INFO  shutting down Metals
+2023.11.20 15:38:33 INFO  Exiting server
+2023.11.27 12:17:33 INFO  Started: Metals version 1.1.0 in folders '/Users/luzm/git/compilerdesign/project/simp_lab3' for client Visual Studio Code 1.84.2.
+Nov 27, 2023 12:17:35 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 1
+2023.11.27 12:17:35 WARN  Build server is not auto-connectable.
+2023.11.27 12:17:35 WARN  no build target for: /Users/luzm/git/compilerdesign/project/simp_lab3/src/main/scala/sutd/compiler/simp/ir/DF.scala
+2023.11.27 12:17:41 INFO  no build target found for /Users/luzm/git/compilerdesign/project/simp_lab3/src/main/scala/sutd/compiler/simp/ir/DF.scala. Using presentation compiler with project's scala-library version: 3.3.1
+2023.11.27 12:17:41 WARN  no build target for: /Users/luzm/git/compilerdesign/project/simp_lab3/src/main/scala/sutd/compiler/simp/lattice/CompleteLattice.scala
+Nov 27, 2023 12:17:42 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 9
+Nov 27, 2023 12:17:42 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 6
+Nov 27, 2023 12:17:42 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 4
+Nov 27, 2023 12:17:42 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 27
+Nov 27, 2023 12:17:42 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 28
+2023.11.27 12:17:42 WARN  no build target for: /Users/luzm/git/compilerdesign/project/simp_lab3/src/main/scala/sutd/compiler/simp/lattice/CompleteLattice.scala
+2023.11.27 12:17:46 INFO  time: code lens generation in 3.63s
+2023.11.27 12:17:46 INFO  time: code lens generation in 4.18s
+2023.11.27 12:17:46 INFO  time: code lens generation in 4.04s
+2023.11.27 12:17:46 INFO  time: code lens generation in 4.05s
+2023.11.27 12:17:46 INFO  time: code lens generation in 4.34s
+2023.11.27 12:17:46 INFO  time: code lens generation in 4.07s
+2023.11.27 12:18:15 INFO  Shutting down server
+2023.11.27 12:18:15 INFO  shutting down Metals
+2023.11.27 12:18:15 INFO  Exiting server
+2024.10.04 08:19:50 INFO  Started: Metals version 1.3.5 in folders '/Users/luzm/git/compilerdesign/project/simp_lab3' for client Visual Studio Code 1.93.1.[0m
+Downloading https://repo1.maven.org/maven2/com/h2database/h2/2.1.214/h2-2.1.214.jar
+2024.10.04 08:19:52 INFO  Upgraded H2 database.[0m
+SLF4J(W): Class path contains multiple SLF4J providers.
+SLF4J(W): Found provider [scribe.slf4j.ScribeServiceProvider@11a437f5]
+SLF4J(W): Found provider [ch.qos.logback.classic.spi.LogbackServiceProvider@4a2dfc7a]
+SLF4J(W): See https://www.slf4j.org/codes.html#multiple_bindings for an explanation.
+SLF4J(I): Actual provider is of type [scribe.slf4j.ScribeServiceProvider@11a437f5]
+2024.10.04 08:19:52 WARN  Flyway upgrade recommended: H2 2.3.230 is newer than this version of Flyway and support has not been tested. The latest supported version of H2 is 2.2.220.[0m
+Oct 04, 2024 8:19:52 AM org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint notify
+INFO: Unsupported notification method: $/setTrace
+2024.10.04 08:19:52 INFO  no build target found for /Users/luzm/git/compilerdesign/project/simp_lab3/src/main/scala/sutd/compiler/simp/lattice/CompleteLattice.scala. Using presentation compiler with project's scala-library version: 3.3.3[0m
+Oct 04, 2024 8:19:52 AM org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint notify
+INFO: Unsupported notification method: $/setTrace
+2024.10.04 08:19:59 INFO  no build target found for /Users/luzm/git/compilerdesign/project/simp_lab3/src/main/scala/sutd/compiler/simp/ir/MMUpDown.scala. Using presentation compiler with project's scala-library version: 3.3.3[0m
+2024.10.04 08:20:06 INFO  no build target found for /Users/luzm/git/compilerdesign/project/simp_lab3/src/main/scala/sutd/compiler/simp/ir/MMUpDown.scala. Using presentation compiler with project's scala-library version: 3.3.3[0m
+2024.10.04 08:20:06 INFO  no build target found for /Users/luzm/git/compilerdesign/project/simp_lab3/src/main/scala/sutd/compiler/simp/ir/MMUpDown.scala. Using presentation compiler with project's scala-library version: 3.3.3[0m
+2024.10.04 08:20:06 INFO  no build target found for /Users/luzm/git/compilerdesign/project/simp_lab3/src/main/scala/sutd/compiler/simp/ir/MMUpDown.scala. Using presentation compiler with project's scala-library version: 3.3.3[0m
+2024.10.04 08:20:07 INFO  no build target found for /Users/luzm/git/compilerdesign/project/simp_lab3/src/main/scala/sutd/compiler/simp/ir/MMUpDown.scala. Using presentation compiler with project's scala-library version: 3.3.3[0m
+2024.10.04 08:20:07 INFO  no build target found for /Users/luzm/git/compilerdesign/project/simp_lab3/src/main/scala/sutd/compiler/simp/ir/MMUpDown.scala. Using presentation compiler with project's scala-library version: 3.3.3[0m
+2024.10.04 08:20:07 INFO  no build target found for /Users/luzm/git/compilerdesign/project/simp_lab3/src/main/scala/sutd/compiler/simp/ir/MMUpDown.scala. Using presentation compiler with project's scala-library version: 3.3.3[0m
+2024.10.04 08:20:07 INFO  no build target found for /Users/luzm/git/compilerdesign/project/simp_lab3/src/main/scala/sutd/compiler/simp/ir/MMUpDown.scala. Using presentation compiler with project's scala-library version: 3.3.3[0m
+2024.10.04 08:20:13 INFO  no build target found for /Users/luzm/git/compilerdesign/project/simp_lab3/src/main/scala/sutd/compiler/simp/ir/MMUpDown.scala. Using presentation compiler with project's scala-library version: 3.3.3[0m
+2024.10.04 08:20:13 INFO  no build target found for /Users/luzm/git/compilerdesign/project/simp_lab3/src/main/scala/sutd/compiler/simp/ir/MaximalMunch.scala. Using presentation compiler with project's scala-library version: 3.3.3[0m
+2024.10.04 08:20:13 INFO  no build target found for /Users/luzm/git/compilerdesign/project/simp_lab3/src/main/scala/sutd/compiler/simp/ir/MaximalMunch.scala. Using presentation compiler with project's scala-library version: 3.3.3[0m
+2024.10.04 08:20:16 INFO  no build target found for /Users/luzm/git/compilerdesign/project/simp_lab3/src/main/scala/sutd/compiler/simp/ir/MaximalMunch.scala. Using presentation compiler with project's scala-library version: 3.3.3[0m
+2024.10.04 08:20:19 INFO  no build target found for /Users/luzm/git/compilerdesign/project/simp_lab3/src/main/scala/sutd/compiler/simp/ir/MaximalMunch.scala. Using presentation compiler with project's scala-library version: 3.3.3[0m
+2024.10.04 08:20:19 INFO  no build target found for /Users/luzm/git/compilerdesign/project/simp_lab3/src/main/scala/sutd/compiler/simp/ir/MaximalMunch.scala. Using presentation compiler with project's scala-library version: 3.3.3[0m
+2024.10.04 08:20:19 INFO  no build target found for /Users/luzm/git/compilerdesign/project/simp_lab3/src/main/scala/sutd/compiler/simp/ir/MaximalMunch.scala. Using presentation compiler with project's scala-library version: 3.3.3[0m
+2024.10.04 08:20:19 INFO  no build target found for /Users/luzm/git/compilerdesign/project/simp_lab3/src/main/scala/sutd/compiler/simp/ir/MaximalMunch.scala. Using presentation compiler with project's scala-library version: 3.3.3[0m
+Oct 04, 2024 8:20:20 AM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 91
+2024.10.04 08:20:19 INFO  no build target found for /Users/luzm/git/compilerdesign/project/simp_lab3/src/main/scala/sutd/compiler/simp/ir/MaximalMunch.scala. Using presentation compiler with project's scala-library version: 3.3.3[0m
+2024.10.04 08:20:19 INFO  no build target found for /Users/luzm/git/compilerdesign/project/simp_lab3/src/main/scala/sutd/compiler/simp/ir/MaximalMunch.scala. Using presentation compiler with project's scala-library version: 3.3.3[0m
+2024.10.04 08:20:19 INFO  no build target found for /Users/luzm/git/compilerdesign/project/simp_lab3/src/main/scala/sutd/compiler/simp/ir/MaximalMunch.scala. Using presentation compiler with project's scala-library version: 3.3.3[0m
+2024.10.04 08:20:19 INFO  no build target found for /Users/luzm/git/compilerdesign/project/simp_lab3/src/main/scala/sutd/compiler/simp/ir/MaximalMunch.scala. Using presentation compiler with project's scala-library version: 3.3.3[0m
+2024.10.04 08:20:19 INFO  no build target found for /Users/luzm/git/compilerdesign/project/simp_lab3/src/main/scala/sutd/compiler/simp/ir/MaximalMunch.scala. Using presentation compiler with project's scala-library version: 3.3.3[0m
+2024.10.04 08:20:19 INFO  no build target found for /Users/luzm/git/compilerdesign/project/simp_lab3/src/main/scala/sutd/compiler/simp/ir/MaximalMunch.scala. Using presentation compiler with project's scala-library version: 3.3.3[0m
+2024.10.04 08:20:21 INFO  no build target found for /Users/luzm/git/compilerdesign/project/simp_lab3/src/main/scala/sutd/compiler/simp/ir/MaximalMunch.scala. Using presentation compiler with project's scala-library version: 3.3.3[0m
+2024.10.04 08:20:21 INFO  no build target found for /Users/luzm/git/compilerdesign/project/simp_lab3/src/main/scala/sutd/compiler/simp/ir/MaximalMunch.scala. Using presentation compiler with project's scala-library version: 3.3.3[0m
+2024.10.04 08:20:21 INFO  no build target found for /Users/luzm/git/compilerdesign/project/simp_lab3/src/main/scala/sutd/compiler/simp/ir/MaximalMunch.scala. Using presentation compiler with project's scala-library version: 3.3.3[0m
+2024.10.04 08:20:21 INFO  no build target found for /Users/luzm/git/compilerdesign/project/simp_lab3/src/main/scala/sutd/compiler/simp/ir/MaximalMunch.scala. Using presentation compiler with project's scala-library version: 3.3.3[0m
+2024.10.04 08:20:21 INFO  no build target found for /Users/luzm/git/compilerdesign/project/simp_lab3/src/main/scala/sutd/compiler/simp/ir/MaximalMunch.scala. Using presentation compiler with project's scala-library version: 3.3.3[0m
+2024.10.04 08:20:21 INFO  no build target found for /Users/luzm/git/compilerdesign/project/simp_lab3/src/main/scala/sutd/compiler/simp/ir/MaximalMunch.scala. Using presentation compiler with project's scala-library version: 3.3.3[0m
+2024.10.04 08:20:21 INFO  no build target found for /Users/luzm/git/compilerdesign/project/simp_lab3/src/main/scala/sutd/compiler/simp/ir/MaximalMunch.scala. Using presentation compiler with project's scala-library version: 3.3.3[0m
+2024.10.04 08:20:21 INFO  no build target found for /Users/luzm/git/compilerdesign/project/simp_lab3/src/main/scala/sutd/compiler/simp/ir/MaximalMunch.scala. Using presentation compiler with project's scala-library version: 3.3.3[0m
+2024.10.04 08:20:21 WARN  no build target for: /Users/luzm/git/compilerdesign/project/simp_lab3/src/main/scala/sutd/compiler/simp/ir/MaximalMunch.scala[0m
+2024.10.04 08:20:21 INFO  no build target found for /Users/luzm/git/compilerdesign/project/simp_lab3/src/main/scala/sutd/compiler/simp/ir/MaximalMunch.scala. Using presentation compiler with project's scala-library version: 3.3.3[0m
+2024.10.04 08:20:22 INFO  no build target found for /Users/luzm/git/compilerdesign/project/simp_lab3/src/main/scala/sutd/compiler/simp/ir/MaximalMunch.scala. Using presentation compiler with project's scala-library version: 3.3.3[0m
+Oct 04, 2024 8:50:16 AM org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint notify
+INFO: Unsupported notification method: $/setTrace
+2024.10.04 08:50:16 INFO  no build target found for /Users/luzm/git/compilerdesign/project/simp_lab3/src/main/scala/sutd/compiler/simp/ir/MaximalMunch.scala. Using presentation compiler with project's scala-library version: 3.3.3[0m
+2024.10.04 08:54:52 INFO  no build target found for /Users/luzm/git/compilerdesign/project/simp_lab3/src/main/scala/sutd/compiler/simp/ir/MaximalMunch.scala. Using presentation compiler with project's scala-library version: 3.3.3[0m
+2024.10.04 08:55:17 INFO  Shutting down server[0m
+2024.10.04 08:55:17 INFO  shutting down Metals[0m
+2024.10.04 08:55:17 INFO  Exiting server[0m

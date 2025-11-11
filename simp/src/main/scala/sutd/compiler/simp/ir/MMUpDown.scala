@@ -49,7 +49,41 @@ object MMUpDown {
         --------------------------------------------------------------------- (Op)
          GE(e1 op e2) |- (X, down_e1 ++ down_e2 ++ [L:X <- up_e1 op up_e2])
          */ 
-        case _ =>  me.pure((IntLit(1), Nil)) // fixme
+                case Minus(e1, e2) => for {
+            
+            (up_e1,down_e1)  <- genExp(e1)
+            (up_e2,down_e2)  <- genExp(e2)
+            X  <- newTemp
+            lbl <- newLabel
+        } yield (X,down_e1++down_e2++List((lbl, IMinus(X, up_e1, up_e2))))
+        // d <- e1+e2
+        case Plus(e1, e2) => for {
+            (up_e1,down_e1)  <- genExp(e1)
+            (up_e2,down_e2)  <- genExp(e2)
+            X  <- newTemp
+            lbl <- newLabel
+        } yield (X,down_e1++down_e2++List((lbl, IPlus(X, up_e1, up_e2))))
+        // d <- e1*e2
+        case Mult(e1, e2) => for {
+            (up_e1,down_e1)  <- genExp(e1)
+            (up_e2,down_e2)  <- genExp(e2)
+            X  <- newTemp
+            lbl <- newLabel
+        } yield (X,down_e1++down_e2++List((lbl, IMult(X, up_e1, up_e2))))
+        // d <- e1 == e2
+        case DEqual(e1, e2) => for {
+            (up_e1,down_e1)  <- genExp(e1)
+            (up_e2,down_e2)  <- genExp(e2)
+            X  <- newTemp
+            lbl <- newLabel
+        } yield (X,down_e1++down_e2++List((lbl, IDEqual(X, up_e1, up_e2))))
+        // d <- e1 < e2
+        case LThan(e1, e2) => for {
+            (up_e1,down_e1)  <- genExp(e1)
+            (up_e2,down_e2)  <- genExp(e2)
+            X  <- newTemp
+            lbl <- newLabel
+        } yield (X,down_e1++down_e2++List((lbl, ILThan(X, up_e1, up_e2))))
         // Lab 1 Task 2.1 end
     }
 
@@ -136,7 +170,19 @@ object MMUpDown {
         --------------------------------------------------------- (While)
         G(while cond {body}) |- down_cond ++ instrs1 ++ instrs2'
         */
-        case _ => StateT{ st => Identity((st, List())) }  // fixme
+                case While(cond, b) => for {
+            lblBWhile <- chkNextLabel
+            (cond_u, cond_d) <- genExp(cond)
+            
+            lblWhileCondJ <- newLabel
+            instrs2 <- cogen(b)
+            lblEndBody <- newLabel
+            
+            lblEndWhile <- chkNextLabel
+            
+            instrs1          = List((lblWhileCondJ, IIfNot(cond_u, lblEndWhile)))
+            instrs2a         = instrs2 ++ List((lblEndBody, IGoto(lblBWhile)))
+        } yield cond_d ++ instrs1 ++ instrs2a
         // Lab 1 Task 2.2 end
     }
 
@@ -151,3 +197,4 @@ object MMUpDown {
         ll <- traverse( (stmt:Stmt) => cogen(stmt), l)
     } yield ll.flatten
 }
+  

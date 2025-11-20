@@ -1,3 +1,16 @@
+file:///C:/Users/peada/OneDrive%20-%20Singapore%20University%20of%20Technology%20and%20Design/Term%207/Compiler/Compiler-Design-Project/simp/src/main/scala/sutd/compiler/simp/interpreter/SimpInt.scala
+### java.lang.IndexOutOfBoundsException: -1
+
+occurred in the presentation compiler.
+
+presentation compiler configuration:
+
+
+action parameters:
+offset: 2542
+uri: file:///C:/Users/peada/OneDrive%20-%20Singapore%20University%20of%20Technology%20and%20Design/Term%207/Compiler/Compiler-Design-Project/simp/src/main/scala/sutd/compiler/simp/interpreter/SimpInt.scala
+text:
+```scala
 package sutd.compiler.simp.interpreter
 
 
@@ -78,9 +91,8 @@ object SimpInt {
         // Lab 2 Task 1.2 
         case s::rest =>
           for {
-            dlt1 <- i.eval(dlt, s)
-            dlt2 <- eval(dlt1, rest)
-          } yield dlt2
+            dlt1 <- i.eval(dlt, s@@)
+          }
         // Lab 2 Task 1.2 end
       }
     }
@@ -101,19 +113,7 @@ object SimpInt {
         } yield dlt_2
         case Ret(x) => Right(dlt)
         // Lab 2 Task 1.2 
-        case While(cond, body) =>
-          for {
-            c <- evalExp(dlt, cond)
-            dlt2 <- c match {
-              case IntConst(_) => Left("int expression found in the while condition position.")
-              case BoolConst(b) if b =>
-                for {
-                  dltBody <- evalMany.eval(dlt, body)
-                  dltRest <- eval(dltBody, While(cond, body))
-                } yield dltRest
-              case BoolConst(b) => Right(dlt)
-            }
-          } yield dlt2
+        case _ => Left("TODO") // fixme
         // Lab 2 Task 1.2 end
       }
 
@@ -173,3 +173,22 @@ object SimpInt {
     }
 
   }
+```
+
+
+
+#### Error stacktrace:
+
+```
+scala.collection.LinearSeqOps.apply(LinearSeq.scala:129)
+	scala.collection.LinearSeqOps.apply$(LinearSeq.scala:128)
+	scala.collection.immutable.List.apply(List.scala:79)
+	dotty.tools.dotc.util.Signatures$.applyCallInfo(Signatures.scala:244)
+	dotty.tools.dotc.util.Signatures$.computeSignatureHelp(Signatures.scala:101)
+	dotty.tools.dotc.util.Signatures$.signatureHelp(Signatures.scala:88)
+	dotty.tools.pc.SignatureHelpProvider$.signatureHelp(SignatureHelpProvider.scala:46)
+	dotty.tools.pc.ScalaPresentationCompiler.signatureHelp$$anonfun$1(ScalaPresentationCompiler.scala:435)
+```
+#### Short summary: 
+
+java.lang.IndexOutOfBoundsException: -1

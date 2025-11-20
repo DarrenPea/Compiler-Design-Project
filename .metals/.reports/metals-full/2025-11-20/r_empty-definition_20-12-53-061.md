@@ -1,3 +1,31 @@
+error id: file:///C:/Users/peada/OneDrive%20-%20Singapore%20University%20of%20Technology%20and%20Design/Term%207/Compiler/Compiler-Design-Project/simp/src/main/scala/sutd/compiler/simp/interpreter/SimpInt.scala:`<none>`.
+file:///C:/Users/peada/OneDrive%20-%20Singapore%20University%20of%20Technology%20and%20Design/Term%207/Compiler/Compiler-Design-Project/simp/src/main/scala/sutd/compiler/simp/interpreter/SimpInt.scala
+empty definition using pc, found symbol in pc: `<none>`.
+empty definition using semanticdb
+empty definition using fallback
+non-local guesses:
+	 -sutd/compiler/simp/syntax/AST.dltBody.
+	 -sutd/compiler/simp/syntax/AST.dltBody#
+	 -sutd/compiler/simp/syntax/AST.dltBody().
+	 -Exp.dltBody.
+	 -Exp.dltBody#
+	 -Exp.dltBody().
+	 -Stmt.dltBody.
+	 -Stmt.dltBody#
+	 -Stmt.dltBody().
+	 -Const.dltBody.
+	 -Const.dltBody#
+	 -Const.dltBody().
+	 -dltBody.
+	 -dltBody#
+	 -dltBody().
+	 -scala/Predef.dltBody.
+	 -scala/Predef.dltBody#
+	 -scala/Predef.dltBody().
+offset: 3648
+uri: file:///C:/Users/peada/OneDrive%20-%20Singapore%20University%20of%20Technology%20and%20Design/Term%207/Compiler/Compiler-Design-Project/simp/src/main/scala/sutd/compiler/simp/interpreter/SimpInt.scala
+text:
+```scala
 package sutd.compiler.simp.interpreter
 
 
@@ -108,7 +136,7 @@ object SimpInt {
               case IntConst(_) => Left("int expression found in the while condition position.")
               case BoolConst(b) if b =>
                 for {
-                  dltBody <- evalMany.eval(dlt, body)
+                  dltBody@@ <- evalMany.eval(dlt, body)
                   dltRest <- eval(dltBody, While(cond, body))
                 } yield dltRest
               case BoolConst(b) => Right(dlt)
@@ -173,3 +201,9 @@ object SimpInt {
     }
 
   }
+```
+
+
+#### Short summary: 
+
+empty definition using pc, found symbol in pc: `<none>`.

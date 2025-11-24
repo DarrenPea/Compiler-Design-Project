@@ -82,10 +82,16 @@ object TypeInf {
       */
     given exTypeSubstitutable:Substitutable[ExType] = new Substitutable[ExType]{
         def applySubst(tysubst:TypeSubst)(ty:ExType):ExType = tysubst match {
-            // Lab 2 Task 2.1
-            case _ => ty // fixme
-            // Lab 2 Task 2.1 end
-        }
+            case Empty => ty
+            case RevComp((n, t), psi) => ty match {
+                case TypeVar(m) if m == n => 
+                    applySubst(psi)(t)
+                case TypeVar(m) => 
+                    applySubst(psi)(ty)
+                case MonoType(_) => 
+                    applySubst(psi)(ty)
+    }
+}
     }
 
     /**
@@ -136,10 +142,17 @@ object TypeInf {
                 }
             }
             case Ret(x) => Set()
-            // Lab 2 Task 2.3
-            case _ => Set() // fixme
-            // Lab 2 Task 2.3 end
-            
+            case If(e, s1, s2) => {
+                val (exTy, k1) = inferExp(e)
+                val k2 = infList[Stmt].infer(s1)
+                val k3 = infList[Stmt].infer(s2)
+                k1 union k2 union k3 + ((exTy, MonoType(BoolTy)))
+                }
+            case While(e, s) => {
+                val (exTy, k1) = inferExp(e)
+                val k2 = infList[Stmt].infer(s)
+                k1 union k2 + ((exTy, MonoType(BoolTy)))
+}
         }
     }
 
@@ -150,18 +163,60 @@ object TypeInf {
       * @param e
       * @return
       */
-    def inferExp(e:Exp):(ExType, TypeConstrs) = e match {
-        case ConstExp(IntConst(v)) => (MonoType(IntTy), Set())
-        case ConstExp(BoolConst(v)) => (MonoType(BoolTy), Set())
-        case VarExp(v) => {
-            val n = varname(v)
-            (TypeVar(n), Set())
-        }
-        case ParenExp(e) => inferExp(e)
-        // Lab 2 Task 2.3
-        case _ => (MonoType(IntTy), Set()) // fixme
-        // Lab 2 Task 2.3 end        
-    } 
+def inferExp(e:Exp):(ExType, TypeConstrs) = e match {
+    case ConstExp(IntConst(v)) => (MonoType(IntTy), Set())
+    case ConstExp(BoolConst(v)) => (MonoType(BoolTy), Set())
+    case VarExp(v) => {
+        val n = varname(v)
+        (TypeVar(n), Set())
+    }
+    case ParenExp(e) => inferExp(e)
+
+    case Plus(e1, e2) => {
+        val (ty1, k1) = inferExp(e1)
+        val (ty2, k2) = inferExp(e2)
+        val constrs = k1 union k2 + 
+            ((ty1, MonoType(IntTy))) + 
+            ((ty2, MonoType(IntTy)))
+        (MonoType(IntTy), constrs)
+    }
+    case Minus(e1, e2) => {
+        val (ty1, k1) = inferExp(e1)
+        val (ty2, k2) = inferExp(e2)
+        val constrs = k1 union k2 + 
+            ((ty1, MonoType(IntTy))) + 
+            ((ty2, MonoType(IntTy)))
+        (MonoType(IntTy), constrs)
+    }
+    case Mult(e1, e2) => {
+        val (ty1, k1) = inferExp(e1)
+        val (ty2, k2) = inferExp(e2)
+        val constrs = k1 union k2 + 
+            ((ty1, MonoType(IntTy))) + 
+            ((ty2, MonoType(IntTy)))
+        (MonoType(IntTy), constrs)
+    }
+    
+
+    case LThan(e1, e2) => {
+        val (ty1, k1) = inferExp(e1)
+        val (ty2, k2) = inferExp(e2)
+        val constrs = k1 union k2 + 
+            ((ty1, MonoType(IntTy))) + 
+            ((ty2, MonoType(IntTy)))
+        (MonoType(BoolTy), constrs)
+    }
+    case DEqual(e1, e2) => {
+        val (ty1, k1) = inferExp(e1)
+        val (ty2, k2) = inferExp(e2)
+        val constrs = k1 union k2 + 
+            ((ty1, MonoType(IntTy))) + 
+            ((ty2, MonoType(IntTy)))
+        (MonoType(BoolTy), constrs)
+    }
+}
+
+ 
 
     /**
       * unification type class
@@ -175,10 +230,15 @@ object TypeInf {
       */
     given extypesUnifiable:Unifiable[(ExType, ExType)] = new Unifiable[(ExType, ExType)] {
         def mgu(p:(ExType,ExType)):Either[String,TypeSubst] = p match {
-            // Lab 2 Task 2.2
-            case (exTy1, exTy2) => Left(s"error: unable to unify ${p.toString}") // fixme
-            // Lab 2 Task 2.2 end
-        }
+            case (MonoType(t1), MonoType(t2)) if t1 == t2 => 
+                Right(Empty)  
+            case (TypeVar(n), t) =>
+                Right(single(n, t))  
+            case (t, TypeVar(n)) => 
+                Right(single(n, t))  
+            case _ => 
+                Left(s"error: unable to unify ${p.toString}")
+}
     }
 
     /**
@@ -191,13 +251,20 @@ object TypeInf {
     }
     
     given listUnifiable[A](using u:Unifiable[A])(using s:Substitutable[List[A]]):Unifiable[List[A]] = new Unifiable[List[A]] {
-        def mgu(l:List[A]):Either[String, TypeSubst] = {
-            l match {
-                // Lab 2 Task 2.2
-                case _ => Left("TODO") // fixme
-                // Lab 2 Task 2.2 end
-            }
+            def mgu(l:List[A]):Either[String, TypeSubst] = l match {
+                case Nil => Right(Empty)
+                case x :: xs => 
+                    u.mgu(x) match {
+                        case Left(err) => Left(err)
+                        case Right(subst1) => 
+                            val xs1 = s.applySubst(subst1)(xs)
+                            mgu(xs1) match {
+                                case Left(err) => Left(err)
+                                case Right(subst2) => 
+                                    Right(compose(subst2, subst1))
+                }
         }
+}
     }
 
 
@@ -213,7 +280,7 @@ object TypeInf {
       */
     def ground(varname:String, subst:TypeSubst)(using i:Substitutable[ExType]):Either[String, Type] = i.applySubst(subst)(TypeVar(varname)) match {
         case MonoType(t) => Right(t)
-        case _ => Left(s"error: type inference failed. ${varname}'s type cannot be grounded ${subst}.")
+        case _ => Left(s"error: type inf	erence failed. ${varname}'s type cannot be grounded ${subst}.")
     }
 
     /**

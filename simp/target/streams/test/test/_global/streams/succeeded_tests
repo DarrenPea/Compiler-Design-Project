@@ -1,5 +1,8 @@
 #Successful Tests
-#Thu Nov 20 20:14:34 SGT 2025
+#Mon Dec 08 01:53:15 SGT 2025
+sutd.compiler.simp.TestDF=1765116368779
 sutd.compiler.simp.TestLexer=1762776286329
+sutd.compiler.simp.TestLivenessAnalysis=1765129995695
 sutd.compiler.simp.TestParser=1762794875486
+sutd.compiler.simp.TestSSA=1765124513475
 sutd.compiler.simp.TestSimpInt=1763640874065

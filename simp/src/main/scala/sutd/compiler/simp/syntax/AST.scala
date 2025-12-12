@@ -1,50 +1,51 @@
 package sutd.compiler.simp.syntax
 
+import sutd.compiler.simp.syntax.SrcLoc.*
+
 object AST {
-  
-    /**
-     * S ::= X = E ; | return X ; | nop | if E { \overline{S} } else { \overline{S} } | while E { \overline{S} } 
-     * E ::= E Op E | X | C | (E)
-     * \overline{S} ::= S | S \overline{S}
-     * Op ::= + | - | *  
-     * C ::= 1 | 2 | ... | true | false 
-     * X ::= a | b | c | d 
-     * */
+    type Var = String
+    
     enum Stmt {
-        case Assign(x:Var, e:Exp) 
-        case If(cond:Exp, th:List[Stmt], el:List[Stmt]) 
-        case Nop
-        case While(cond:Exp, b:List[Stmt]) 
-        case Ret(x:Var)
+        case Nop(src: SrcLoc)
+        case Assign(src: SrcLoc, x: Var, e: Exp)
+        case Ret(src: SrcLoc, e: Exp)
+        case IfElse(src: SrcLoc, cond: Exp, thn: Stmt, els: Stmt)
+        case While(src: SrcLoc, cond: Exp, body: Stmt)
+        case Seq(src: SrcLoc, stmts: List[Stmt])
     }
     
-    case class Var(name:String)
-
-    /**
-      * extract the name from a variable
-      *
-      * @param v - variable
-      * @return string
-      */
-    def varname(v:Var):String = v match {
-        case Var(name) => name
+    enum Exp {
+        case IntConst(src: SrcLoc, v: Int)
+        case BoolConst(src: SrcLoc, v: Boolean)
+        case Var(src: SrcLoc, x: String)
+        case Plus(src: SrcLoc, e1: Exp, e2: Exp)
+        case Minus(src: SrcLoc, e1: Exp, e2: Exp)
+        case Mult(src: SrcLoc, e1: Exp, e2: Exp)
+        case DEqual(src: SrcLoc, e1: Exp, e2: Exp)
+        case LThan(src: SrcLoc, e1: Exp, e2: Exp)
     }
-        
-    enum Exp{
-        case Plus(e1:Exp, e2:Exp)
-        case Minus(e1:Exp, e2:Exp)
-        case Mult(e1:Exp, e2:Exp)
-        case DEqual(e1:Exp, e2:Exp)
-        case LThan(e1:Exp, e2:Exp)
-        case ConstExp(l:Const)
-        case VarExp(v:Var)
-        case ParenExp(e:Exp)
-    }
-
-    enum Const{
-        case IntConst(v:Int)
-        case BoolConst(v:Boolean)
-    }
-
     
+    // Helper functions to extract source locations
+    import Stmt.*
+    import Exp.*
+    
+    def stmtSrcLoc(s: Stmt): SrcLoc = s match {
+        case Nop(src) => src
+        case Assign(src, _, _) => src
+        case Ret(src, _) => src
+        case IfElse(src, _, _, _) => src
+        case While(src, _, _) => src
+        case Seq(src, _) => src
+    }
+    
+    def expSrcLoc(e: Exp): SrcLoc = e match {
+        case IntConst(src, _) => src
+        case BoolConst(src, _) => src
+        case Var(src, _) => src
+        case Plus(src, _, _) => src
+        case Minus(src, _, _) => src
+        case Mult(src, _, _) => src
+        case DEqual(src, _, _) => src
+        case LThan(src, _, _) => src
+    }
 }

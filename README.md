@@ -6,5 +6,6 @@ You may work as a team (up to max 3 members). Please register your team [here](h
 * Lab 2 (10%, Deadline - 30 Nov 2025 23:59)
 * Lab 3 (15%, Deadline - 14 Dec 2025 23:59)
 
-*Lab 3 Task 4*
+Lab 3 Task 4
+
 We have extended the parser for better error reporting by modifying AST.scala as well as Parser.scala

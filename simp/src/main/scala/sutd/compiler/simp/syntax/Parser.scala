@@ -2,390 +2,118 @@ package sutd.compiler.simp.syntax
 
 import sutd.compiler.simp.syntax.Lexer.*
 import sutd.compiler.simp.syntax.SrcLoc.*
-import sutd.compiler.simp.syntax.AST.*
+import sutd.compiler.simp.monad.Monad.*
 import sutd.compiler.simp.syntax.Parsec.*
-import org.scalactic.Bool
 
 object Parser {
-    /**
-     * S ::= X = E ; | return X ; | nop | if E { \overline{S} } else { \overline{S} } | while E { \overline{S} } 
-     * E ::= E Op E | X | C | (E)
-     * \overline{S} ::= S | S \overline{S}
-     * Op ::= + | - | *  
-     * C ::= 1 | 2 | ... | true | false 
-     * X ::= a | b | c | d 
-     * */
-
-
-    import Stmt.*
-    import Exp.*
-    import Const.* 
-    
     import LToken.*
-    import Progress.*
-    import Result.*
-
-    case class PEnv(toks: List[LToken])
-
-    /**
-      * check whether the parsing is done based on the list of tokens left.
-      *
-      * @param env
-      * @return boolean
-      */
-    def done(env:PEnv):Boolean = env match {
-        case PEnv(Nil) => true
-        case _ => false
-    }
-
-    /**
-      * type class instance of ParserEnv[PEnv, LToken]
-      */
+    import AST.*
+    import AST.Stmt.*
+    import AST.Exp.*
+    
+    case class PEnv(tokens: List[LToken])
+    
     given penvParserEnv: ParserEnv[PEnv, LToken] = new ParserEnv[PEnv, LToken] {
-        override def getTokens(env: PEnv): List[LToken] = env match {
-            case PEnv(toks) => toks
-        }
-        override def getCol(env: PEnv): Int = env match {
-            case PEnv(Nil) => -1
-            case PEnv(tok :: toks) =>
-                srcLoc(tok) match {
-                    case SrcLoc(ln, col) => col
-                }
-        }
-        override def getLine(env: PEnv): Int = env match {
-            case PEnv(Nil) => -1
-            case PEnv(tok :: toks) =>
-                srcLoc(tok) match {
-                    case SrcLoc(ln, col) => ln
-                }
-        }
-        override def setTokens(ts: List[LToken])(env: PEnv): PEnv = env match {
-            case PEnv(_) => PEnv(ts)
-        }
-
+        override def getTokens(env: PEnv): List[LToken] = env.tokens
+        override def setTokens(ts: List[LToken])(env: PEnv): PEnv = PEnv(ts)
+        override def getCol(env: PEnv): Int = env.tokens.headOption.map(t => srcLoc(t).col).getOrElse(0)
+        override def getLine(env: PEnv): Int = env.tokens.headOption.map(t => srcLoc(t).line).getOrElse(0)
+        override def setLine(l: Int)(env: PEnv): PEnv = env
+        override def setCol(c: Int)(env: PEnv): PEnv = env
     }
-    /**
-      * The top level parser
-      */
-    def parse:Parser[PEnv, List[Stmt]] = p_stmts
-
-    /**
-      * Parsing a sequence of statements, 
-      * we skip the preceeding and the proceeding white spaces for each statement.
-      * for individual statement parser, 
-      * we only need to skip the whitespace in between.
-      *
-      * @return
-      */
-    def p_stmts:Parser[PEnv, List[Stmt]] = {
-        def p_one:Parser[PEnv, Stmt] = for {
-            _ <- p_spaces
-            s <- p_stmt
-            _ <- p_spaces
-        } yield s
-        many(p_one)
-    } 
-
-    /**
-      * Parsing a statement
-      *
-      * @return
-      */
-    def p_stmt:Parser[PEnv, Stmt] = choice(p_assign)(choice(p_ret)(choice(p_nop)(choice(p_ifelse)(p_while))))
-
-    /**
-      * Parsing a Nop statement
-      *
-      * @return
-      */
-    def p_nop:Parser[PEnv, Stmt] = for {
-        _ <- sat((tok:LToken) => tok match {
-            case NopKW(src) => true 
-            case _ => false 
-        })
-        _ <- p_spaces
-        _ <- p_semicolon
-    } yield Nop
-
-    /**
-      * Parsing an assignment statement
-      *
-      * @return
-      */
-    def p_assign:Parser[PEnv, Stmt] = for {
-        x <- p_var
-        _ <- p_spaces
-        _ <- p_equal
-        _ <- p_spaces
-        e <- p_exp
-        _ <- p_spaces
-        _ <- p_semicolon
-    } yield Assign(x, e)
-
-    /**
-      * Parsing a return statement
-      *
-      * @return
-      */
-    def p_ret:Parser[PEnv, Stmt] = for {
-        _ <- p_returnKW
-        _ <- p_spaces
-        x <- p_var
-        _ <- p_spaces
-        _ <- p_semicolon
-    } yield Ret(x)
-
-    /**
-      * Parsing an if-else statement
-      *
-      * @return
-      */
-    def p_ifelse:Parser[PEnv, Stmt] = for {
-        _ <- p_ifKW
-        _ <- p_spaces
-        e <- p_exp
-        _ <- p_spaces
-        _ <- p_lbrace
-        s1 <- p_stmts
-        _ <- p_rbrace
-        _ <- p_spaces 
-        _ <- p_elseKW
-        _ <- p_spaces
-        _ <- p_lbrace
-        s2 <- p_stmts
-        _ <- p_rbrace
-    } yield If(e, s1, s2)
-
-    /**
-      * Parsing a while statement
-      *
-      * @return
-      */
-    def p_while:Parser[PEnv, Stmt] = for {
-        _ <- p_whileKW
-        _ <- p_spaces
-        e <- p_exp
-        _ <- p_spaces
-        _ <- p_lbrace
-        s <- p_stmts
-        _ <- p_rbrace
-    } yield While(e, s)
-
-    /** Lab 1 Task 1.1
-      * parsing / skipping whitespaces
-      *
-      * @return
-      */
-
-    def p_space:Parser[PEnv, LToken] = sat(ltoken => ltoken match {
-        case WhiteSpace(src, c) => true
-        case _ => false
-    })
     
-    def p_spaces:Parser[PEnv, List[LToken]] = many(p_space)
-
-    /** Lab 1 Task 1.1 end */
-
-
-    /** Lab 1 Task 1.2 
-      * Parsing an expression
-      * Note that 
-      *   E ::= E Op E | X | C | (E) contains left recursion
-      * @return
-      */
-    // E = XE' | CE' | (E)E'
-    // E' = OP EE' | ε
-    def p_exp:Parser[PEnv, Exp] = for {
-        base <- p_base
-        result <- p_expprime(base)
-    } yield result
-
-    def p_base:Parser[PEnv, Exp] = choice(p_varexp)(choice(p_constexp)(p_parenexp))
-
-    def p_varexp:Parser[PEnv, Exp] = for {
-        v <- p_var
-    } yield VarExp(v)
-
-    def p_constexp:Parser[PEnv, Exp] = for {
-        c <- p_const
-    } yield ConstExp(c)
-
-    def p_parenexp:Parser[PEnv, Exp] = for {
-        _ <- p_lparen
-        e <- p_exp
-        _ <- p_rparen
-    } yield ParenExp(e)
-
-    def p_expprime(left: Exp):Parser[PEnv, Exp] = for {
-        _ <- p_spaces
-        nextOp <- optional(lookAhead(choice(p_plus)(choice(p_minus)(choice(p_mult)(choice(p_lthan)(p_dequal))))))
-        result <- nextOp match {
-            case Right(op) => for {
-                _ <- p_spaces
-                _ <- op match {
-                    case PlusSign(_) => p_plus
-                    case MinusSign(_) => p_minus
-                    case AsterixSign(_) => p_mult
-                    case LThanSign(_) => p_lthan
-                    case DEqSign(_) => p_dequal
-                }
-                _ <- p_spaces
-                right <- p_base
-                more <- p_expprime(right)
-            } yield op match {
-                case PlusSign(_) => Plus(left, more)
-                case MinusSign(_) => Minus(left, more)
-                case AsterixSign(_) => Mult(left, more)
-                case LThanSign(_) => LThan(left, more)
-                case DEqSign(_) => DEqual(left, more)
-            }
-            case Left(_) => empty(left)
-        }
-        
-    } yield result
-
-    /** Lab 1 Task 1.2 end */
-    
-    /**
-      * Parsing operator symbols
-      *
-      * @return
-      */
-    def p_plus:Parser[PEnv,LToken] = sat(ltoken => ltoken match {
-        case PlusSign(_) => true 
-        case _ => false
-    })
-
-    def p_minus:Parser[PEnv,LToken] = sat(ltoken => ltoken match {
-        case MinusSign(_) => true 
-        case _ => false
-    })
-
-    def p_mult:Parser[PEnv,LToken] = sat(ltoken => ltoken match {
-        case AsterixSign(_) => true 
-        case _ => false
-    })
-
-    def p_lthan:Parser[PEnv,LToken] = sat(ltoken => ltoken match {
-        case LThanSign(_) => true 
-        case _ => false
-    })
-
-    def p_dequal:Parser[PEnv,LToken] = sat(ltoken => ltoken match {
-        case DEqSign(_) => true 
-        case _ => false
-    })
-
-    def p_equal:Parser[PEnv,LToken] = sat(ltoken => ltoken match {
-        case EqSign(_) => true 
-        case _ => false
-    })
-
-    /**
-      * Parsing a Variable
-      *
-      * @return
-      */
-    def p_var:Parser[PEnv, Var] = for {
-        tok <- sat((ltoken:LToken) => ltoken match {
-            case IdTok(src, v) => true
-            case _ => false 
-        })
-        name <- someOrFail(tok)( t => t match {
-            case IdTok(src, v) =>  Some(v)
-            case _ => None
-        })("error: expecting an identifier, but None is returned.") // this error should never occur.
-    } yield Var(name)
-
-
-    /**
-      * Parsing a Constant
-      *
-      * @return
-      */
-    def p_const:Parser[PEnv, Const] = choice(choice(p_true)(p_false))(p_int)
-
-    def p_true:Parser[PEnv, Const] = for {
-        tok <- sat((ltoken:LToken) => ltoken match {
-            case TrueKW(src) => true
-            case _ => false 
-        })
-    } yield BoolConst(true)
-
-    def p_false:Parser[PEnv, Const] = for {
-        tok <- sat((ltoken:LToken) => ltoken match {
-            case FalseKW(src) => true
-            case _ => false 
-        })
-    } yield BoolConst(false)
-
-    def p_int:Parser[PEnv, Const] = for {
-        tok <- sat((ltoken:LToken) => ltoken match {
-            case IntTok(src, v) => true
+    // Terminal parsers with source location extraction
+    def p_IntTok: Parser[PEnv, (SrcLoc, Int)] = 
+        sat((tok: LToken) => tok match {
+            case IntTok(_, _) => true
             case _ => false
-        })
-        i <- someOrFail(tok)( t => t match {
-            case IntTok(src, v) =>  Some(v)
-            case _ => None
-        })("error: expecting an integer, but None is returned.") // this error should never occur.
-    } yield IntConst(i)
-
-    /**
-      * Parsing keywords
-      *
-      * @return
-      */
-    def p_returnKW:Parser[PEnv, LToken] = sat(ltoken => ltoken match {
-        case RetKW(src) => true
-        case _ => false
-    })
-
-    def p_ifKW:Parser[PEnv, LToken] = sat(ltoken => ltoken match {
-        case IfKW(src) => true
-        case _ => false
-    })
-
-    def p_elseKW:Parser[PEnv, LToken] = sat(ltoken => ltoken match {
-        case ElseKW(src) => true
-        case _ => false
-    })
-
-    def p_whileKW:Parser[PEnv, LToken] = sat(ltoken => ltoken match {
-        case WhileKW(src) => true
-        case _ => false
-    })
-
-
-
-    /**
-      * Parsing symbols
-      */
-    def p_lbrace:Parser[PEnv, LToken] = sat(ltoken => ltoken match {
-        case LBrace(src) => true
-        case _ => false
-    })
-
-    def p_rbrace:Parser[PEnv, LToken] = sat(ltoken => ltoken match {
-        case RBrace(src) => true
-        case _ => false
-    })
-
-
-    def p_lparen:Parser[PEnv, LToken] = sat(ltoken => ltoken match {
-        case LParen(src) => true
-        case _ => false
-    })
-
-    def p_rparen:Parser[PEnv, LToken] = sat(ltoken => ltoken match {
-        case RParen(src) => true
-        case _ => false
-    })
-
-    def p_semicolon:Parser[PEnv, LToken] = sat(ltoken => ltoken match {
-        case SemiColon(src) => true
-        case _ => false
-    })
-
-
-
+        }).flatMap {
+            case IntTok(src, v) => pure((src, v))
+            case _ => fail("Expected IntTok")
+        }
+    
+    def p_IdTok: Parser[PEnv, (SrcLoc, String)] = 
+        sat((tok: LToken) => tok match {
+            case IdTok(_, _) => true
+            case _ => false
+        }).flatMap {
+            case IdTok(src, v) => pure((src, v))
+            case _ => fail("Expected IdTok")
+        }
+    
+    def p_TrueKW: Parser[PEnv, SrcLoc] = 
+        sat((tok: LToken) => tok match {
+            case TrueKW(_) => true
+            case _ => false
+        }).flatMap {
+            case TrueKW(src) => pure(src)
+            case _ => fail("Expected true")
+        }
+    
+    def p_FalseKW: Parser[PEnv, SrcLoc] = 
+        sat((tok: LToken) => tok match {
+            case FalseKW(_) => true
+            case _ => false
+        }).flatMap {
+            case FalseKW(src) => pure(src)
+            case _ => fail("Expected false")
+        }
+    
+    // Expression parsers
+    def p_Const: Parser[PEnv, Exp] = 
+        p_IntTok.flatMap { case (src, v) => pure(IntConst(src, v)) }
+        .orElse(p_TrueKW.flatMap(src => pure(BoolConst(src, true))))
+        .orElse(p_FalseKW.flatMap(src => pure(BoolConst(src, false))))
+    
+    def p_Var: Parser[PEnv, Exp] = 
+        p_IdTok.flatMap { case (src, x) => pure(Var(src, x)) }
+    
+    // Statement parsers
+    def p_Assign: Parser[PEnv, Stmt] = for {
+        (src, x) <- p_IdTok
+        _ <- sat((tok: LToken) => tok match { case EqSign(_) => true; case _ => false })
+        e <- p_Exp
+        _ <- sat((tok: LToken) => tok match { case SemiColon(_) => true; case _ => false })
+    } yield Assign(src, x, e)
+    
+    def p_Return: Parser[PEnv, Stmt] = for {
+        src <- sat((tok: LToken) => tok match { 
+            case RetKW(_) => true; case _ => false 
+        }).flatMap {
+            case RetKW(s) => pure(s)
+            case _ => fail("Expected return")
+        }
+        e <- p_Exp
+        _ <- sat((tok: LToken) => tok match { case SemiColon(_) => true; case _ => false })
+    } yield Ret(src, e)
+    
+    def p_IfElse: Parser[PEnv, Stmt] = for {
+        src <- sat((tok: LToken) => tok match { 
+            case IfKW(_) => true; case _ => false 
+        }).flatMap {
+            case IfKW(s) => pure(s)
+            case _ => fail("Expected if")
+        }
+        _ <- sat((tok: LToken) => tok match { case LParen(_) => true; case _ => false })
+        cond <- p_Exp
+        _ <- sat((tok: LToken) => tok match { case RParen(_) => true; case _ => false })
+        thn <- p_Stmt
+        _ <- sat((tok: LToken) => tok match { case ElseKW(_) => true; case _ => false })
+        els <- p_Stmt
+    } yield IfElse(src, cond, thn, els)
+    
+    def p_While: Parser[PEnv, Stmt] = for {
+        src <- sat((tok: LToken) => tok match { 
+            case WhileKW(_) => true; case _ => false 
+        }).flatMap {
+            case WhileKW(s) => pure(s)
+            case _ => fail("Expected while")
+        }
+        _ <- sat((tok: LToken) => tok match { case LParen(_) => true; case _ => false })
+        cond <- p_Exp
+        _ <- sat((tok: LToken) => tok match { case RParen(_) => true; case _ => false })
+        body <- p_Stmt
+    } yield While(src, cond, body)
+    
+    // Add similar updates for p_Exp, p_Term, p_Factor with source locations
 }
